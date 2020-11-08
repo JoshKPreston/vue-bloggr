@@ -4,6 +4,7 @@
     <img class="rounded" :src="profile.picture" alt="" />
     <p>{{ profile.email }}</p>
   </div>
+  <button id="newPost" value="Post"></button>
 </template>
 
 <script>
