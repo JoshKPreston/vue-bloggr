@@ -53,7 +53,7 @@ class CommentService {
   // creatorEmail: { type: String, required: true }
   async create(blogId, comment) {
     try {
-      const res = await api.post('/blogs/' + blogId + '/comments', comment)
+      const res = await api.post('/comments', comment)
       // eslint-disable-next-line no-console
       console.log(res.data)
       this.getBlogComments(blogId)
@@ -63,27 +63,31 @@ class CommentService {
     }
   }
 
-  async edit(blogId, commentId, newCommentData) {
-    try {
-      const res = await api.put('/blogs/' + blogId + '/comments/' + commentId, newCommentData)
-      // eslint-disable-next-line no-console
-      console.log(res.data)
-      this.getBlogComments(blogId)
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error)
+  async edit(blogId, commentId, creatorEmail, profileEmail, newCommentData) {
+    if (creatorEmail === profileEmail) {
+      try {
+        const res = await api.put('/comments/' + commentId, newCommentData)
+        // eslint-disable-next-line no-console
+        console.log(res.data)
+        this.getBlogComments(blogId)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      }
     }
   }
 
-  async delete(blogId, commentId) {
-    try {
-      const res = await api.delete('/blogs/' + blogId + '/comments/' + commentId)
-      // eslint-disable-next-line no-console
-      console.log(res.data)
-      this.getBlogComments(blogId)
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error)
+  async delete(blogId, commentId, creatorEmail, profileEmail) {
+    if (creatorEmail === profileEmail) {
+      try {
+        const res = await api.delete('/comments/' + commentId)
+        // eslint-disable-next-line no-console
+        console.log(res.data)
+        this.getBlogComments(blogId)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      }
     }
   }
 }

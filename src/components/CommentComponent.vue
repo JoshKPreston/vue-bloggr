@@ -33,12 +33,12 @@
         <small v-if="comment.creator.name">{{ comment.creator.name }}</small>
       </div>
       <div class="col-2 d-flex align-items-center function-btns">
-        <button v-if="comment.creatorEmail === profile.email" class="btn btn-info btn-edit" data-toggle="modal" data-target="#editCommentForm" @click="getComment(comment._id)">
+        <button v-if="comment.creatorEmail === profile.email" class="btn btn-info btn-edit" data-toggle="modal" :data-target="'#modal_' + comment._id" @click="getComment(comment._id)">
           <i class="fa fa-pencil" aria-hidden="true"></i>
         </button>
         <!-- Modal -->
         <div class="modal fade"
-             id="editCommentForm"
+             :id="'modal_' + comment._id"
              tabindex="-1"
              role="dialog"
              aria-labelledby="Edit comment"
@@ -55,10 +55,10 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form class="new-comment-form" @submit.prevent="editComment(event, comment._id, comment.creatorEmail, profile.email)">
+                <form class="new-comment-form" @submit.prevent="editComment(comment.blog, comment._id, comment.creatorEmail, profile.email)">
                   <div class="form-group">
-                    <label class=" text-dark" for="editCommentBody">Body</label>
-                    <textarea id="editCommentBody"
+                    <label class=" text-dark" :for="'editCommentBody_' + comment._id">Body</label>
+                    <textarea :id="'editCommentBody_' + comment._id"
                               class="form-control"
                               rows="10"
                               type="textarea"
@@ -79,7 +79,7 @@
             </div>
           </div>
         </div>
-        <button v-if="comment.creatorEmail === profile.email" class="btn btn-danger btn-delete" @click="deleteComment(comment._id, comment.creatorEmail, profile.email)">
+        <button v-if="comment.creatorEmail === profile.email" class="btn btn-danger btn-delete" @click="deleteComment(comment.blog, comment._id, comment.creatorEmail, profile.email)">
           <i class="fa fa-eraser" aria-hidden="true"></i>
         </button>
       </div>
@@ -90,6 +90,7 @@
 <script>
 import { computed, reactive } from 'vue'
 import { AppState } from '../AppState'
+import { commentService } from '../services/CommentService'
 export default {
   name: 'CommentComponent',
   props: {
@@ -107,7 +108,14 @@ export default {
     return {
       state,
       comment: computed(() => props.commentProp),
-      profile: computed(() => AppState.profile)
+      profile: computed(() => AppState.profile),
+      editComment(blogId, commentId, creatorEmail, profileEmail) {
+        state.editComment.blog = blogId
+        commentService.edit(blogId, commentId, creatorEmail, profileEmail, state.editComment)
+      },
+      deleteComment(blogId, commentId, creatorEmail, profileEmail) {
+        commentService.delete(blogId, commentId, creatorEmail, profileEmail)
+      }
     }
   },
   components: {}

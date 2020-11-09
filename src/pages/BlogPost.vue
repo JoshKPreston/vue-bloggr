@@ -71,9 +71,10 @@ export default {
       post: computed(() => AppState.blogPost),
       comments: computed(() => AppState.comments),
       postComment(blogId) {
-        // state.newComment.blog = blogId
-        // state.newComment.creatorEmail = AppState.profile.email
-        commentService.create(blogId, state.newComment.body)
+        state.newComment.blog = blogId
+        state.newComment.creatorEmail = AppState.profile.email
+        commentService.create(blogId, state.newComment)
+        state.newComment = {}
       }
     }
   },

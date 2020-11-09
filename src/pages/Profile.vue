@@ -74,7 +74,7 @@ export default {
       blogs: computed(() => AppState.blogs.filter(b => b.creator !== null && b.creatorEmail === AppState.profile.email)),
       createPost(event) {
         blogService.create(state.newPost)
-        event.target.reset()
+        state.newPost = {}
         blogService.getBlogs()
       }
     }

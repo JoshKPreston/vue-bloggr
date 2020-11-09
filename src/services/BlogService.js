@@ -84,7 +84,8 @@ class BlogService {
       // eslint-disable-next-line no-console
       console.log(res.data)
       const index = AppState.blogs.indexOf(b => b._id === id)
-      AppState.blogs = AppState.blogs.splice(index, 1, newBlogPostData)
+      AppState.blogs.splice(index, 1, newBlogPostData)
+      this.getBlogs()
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('failed to edit blog')

@@ -37,12 +37,12 @@
         <small v-if="blog.creator.name">{{ blog.creator.name }}</small>
       </div>
       <div class="col-2 d-flex align-items-center function-btns">
-        <button v-if="blog.creatorEmail === profile.email" class="btn btn-info btn-edit" data-toggle="modal" data-target="#editPostForm" @click="getPost(blog._id)">
+        <button v-if="blog.creatorEmail === profile.email" class="btn btn-info btn-edit" data-toggle="modal" :data-target="'#modal_' + blog._id" @click="getPost(blog._id)">
           <i class="fa fa-pencil" aria-hidden="true"></i>
         </button>
         <!-- Modal -->
         <div class="modal fade"
-             id="editPostForm"
+             :id="'modal_' + blog._id"
              tabindex="-1"
              role="dialog"
              aria-labelledby="Edit post"
@@ -59,14 +59,14 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form class="new-post-form" @submit.prevent="editPost(event, blog._id, blog.creatorEmail, profile.email)">
+                <form class="new-post-form" @submit.prevent="editPost(blog._id, blog.creatorEmail, profile.email)">
                   <div class="form-group">
-                    <label class=" text-dark" for="editPostTitle">Title</label>
-                    <input id="editPostTitle" class="form-control" type="text" v-model="state.editPost.title">
+                    <label class=" text-dark" :for="'modal_' + blog._id + '_title'">Title</label>
+                    <input :id="'modal_' + blog._id + '_title'" class="form-control" type="text" v-model="state.editPost.title">
                   </div>
                   <div class="form-group">
-                    <label class=" text-dark" for="editPostBody">Body</label>
-                    <textarea id="editPostBody"
+                    <label class=" text-dark" :for="'modal_' + blog._id + '_body'">Body</label>
+                    <textarea :id="'modal_' + blog._id + '_body'"
                               class="form-control"
                               rows="10"
                               type="textarea"
@@ -121,9 +121,8 @@ export default {
         state.editPost.title = blog.title
         state.editPost.body = blog.body
       },
-      editPost(event, blogId, creatorEmail, profileEmail) {
+      editPost(blogId, creatorEmail, profileEmail) {
         blogService.edit(blogId, state.editPost, creatorEmail, profileEmail)
-        event.target.reset()
       },
       deletePost(blogId, creatorEmail, profileEmail) {
         blogService.delete(blogId, creatorEmail, profileEmail)
