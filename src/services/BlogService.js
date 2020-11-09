@@ -63,12 +63,13 @@ class BlogService {
     }
   }
 
-  async create(blog) {
+  async create(newBlog) {
     try {
-      const res = await api.post('/blogs', blog)
+      const res = await api.post('/blogs', newBlog)
       // eslint-disable-next-line no-console
       console.log(res.data)
       AppState.blogs = [...AppState.blogs, res.data]
+      this.getBlogs()
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('failed to create blog')
@@ -77,12 +78,13 @@ class BlogService {
     }
   }
 
-  async edit(id, change) {
+  async edit(id, newBlogPostData) {
     try {
-      const res = await api.put('/blogs/:id', change)
+      const res = await api.put('/blogs/' + id, newBlogPostData)
       // eslint-disable-next-line no-console
       console.log(res.data)
-      AppState.blogs = [...AppState.blogs, res.data]
+      const index = AppState.blogs.indexOf(b => b._id === id)
+      AppState.blogs = AppState.blogs.splice(index, 1, newBlogPostData)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('failed to edit blog')
@@ -91,20 +93,22 @@ class BlogService {
     }
   }
 
-  async delete(id) {
-    try {
-      const res = await api.delete('/blogs/:id')
-      const blog = AppState.blogs.filter(blog => blog.id === id)
-      // eslint-disable-next-line no-console
-      console.log(blog)
-      // eslint-disable-next-line no-console
-      console.log(res.data)
-      AppState.blogs = AppState.blogs.filter(blog => blog.id !== id)
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('failed to delete blog')
-      // eslint-disable-next-line no-console
-      console.error(error)
+  async delete(id, creatorEmail, profileEmail) {
+    if (creatorEmail === profileEmail) {
+      try {
+        const blog = AppState.blogs.filter(blog => blog.id === id)
+        if (blog) {
+          const res = await api.delete('/blogs/' + id)
+          AppState.blogs = AppState.blogs.filter(blog => blog.id !== id)
+          // eslint-disable-next-line no-console
+          console.log(res.data)
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('failed to delete blog')
+        // eslint-disable-next-line no-console
+        console.error(error)
+      }
     }
   }
 }

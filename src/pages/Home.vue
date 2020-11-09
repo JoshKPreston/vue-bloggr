@@ -9,8 +9,8 @@
 <script>
 import { computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
-import BlogComponent from '../components/BlogComponent'
 import { blogService } from '../services/BlogService'
+import BlogComponent from '../components/BlogComponent'
 export default {
   name: 'Home',
   setup() {
@@ -18,7 +18,7 @@ export default {
       blogService.getBlogs()
     })
     return {
-      blogs: computed(() => AppState.blogs.filter(b => b.creator != null))
+      blogs: computed(() => AppState.blogs.filter(b => b.creator !== null))
     }
   },
   components: { BlogComponent }

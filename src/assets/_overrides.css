@@ -3,4 +3,5 @@
   backface-visibility: hidden;
   -webkit-touch-action: manipulation;
   touch-action: manipulation;
+  scroll-behavior: smooth;
 }

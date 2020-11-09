@@ -24,63 +24,63 @@ import { api } from './AxiosService'
 import { AppState } from '../AppState'
 
 class CommentService {
-  async getBlogComments(id) {
+  async getBlogComments(blogId) {
     try {
-      const res = await api.get('/blogs/:id/comments')
-      // eslint-disable-next-line no-console
-      console.log(res.data.data)
-      AppState.blogs = res.data.data
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error)
-    }
-  }
-
-  async getCommentById() {
-    try {
-      const res = await api.get('/blogs/:id/comments/:id')
-      // eslint-disable-next-line no-console
-      console.log(res.data.data)
-      AppState.blogs = res.data.data
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error)
-    }
-  }
-
-  async create(blog) {
-    try {
-      const res = await api.post('/blogs/:id/comments', blog)
+      const res = await api.get('/blogs/' + blogId + '/comments')
+      AppState.comments = res.data
       // eslint-disable-next-line no-console
       console.log(res.data)
-      AppState.blogs = [...AppState.blogs, res.data.data]
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
     }
   }
 
-  async edit(id, change) {
+  async getCommentById(blogId, commentId) {
     try {
-      const res = await api.put('/blogs/:id/comments/:id', change)
+      const res = await api.get('/blogs/' + blogId + '/comments/' + commentId)
       // eslint-disable-next-line no-console
       console.log(res.data)
-      AppState.blogs = [...AppState.blogs, res.data.data]
+      AppState.commentPost = res.data
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
     }
   }
 
-  async delete(id) {
+  // body: { type: String, required: true }
+  // blog: { type: ObjectId, ref: "Blog", required: true }
+  // creatorEmail: { type: String, required: true }
+  async create(blogId, comment) {
     try {
-      const res = await api.delete('/blogs/:id/comments/:id')
-      const blog = AppState.blogs.filter(blog => blog.id === id)
+      const res = await api.post('/blogs/' + blogId + '/comments', comment)
       // eslint-disable-next-line no-console
-      console.log(blog)
+      console.log(res.data)
+      this.getBlogComments(blogId)
+    } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(res.data.data)
-      AppState.blogs = AppState.blogs.filter(blog => blog.id !== id)
+      console.error(error)
+    }
+  }
+
+  async edit(blogId, commentId, newCommentData) {
+    try {
+      const res = await api.put('/blogs/' + blogId + '/comments/' + commentId, newCommentData)
+      // eslint-disable-next-line no-console
+      console.log(res.data)
+      this.getBlogComments(blogId)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error)
+    }
+  }
+
+  async delete(blogId, commentId) {
+    try {
+      const res = await api.delete('/blogs/' + blogId + '/comments/' + commentId)
+      // eslint-disable-next-line no-console
+      console.log(res.data)
+      this.getBlogComments(blogId)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)

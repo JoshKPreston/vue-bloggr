@@ -1,15 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img
-          alt="Vue logo"
-          src="../assets/logo.png"
-          width="25"
-        />
-      </div>
       <div class="text-light text-shadow">
-        <h3>ue Template</h3>
+        <h3>Bloggr</h3>
       </div>
     </router-link>
     <button
