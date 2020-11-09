@@ -43,17 +43,21 @@ class BlogService {
       console.log(AppState.blogs)
     } catch (error) {
       // eslint-disable-next-line no-console
+      console.error('failed to get blogs')
+      // eslint-disable-next-line no-console
       console.error(error)
     }
   }
 
-  async getBlockById() {
+  async getBlogById(id) {
     try {
-      const res = await api.get('/blogs/:id')
+      const res = await api.get('/blogs/' + id)
       // eslint-disable-next-line no-console
       console.log(res.data)
-      AppState.blogs = res.data
+      AppState.blogPost = res.data
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('failed to get blog by id')
       // eslint-disable-next-line no-console
       console.error(error)
     }
@@ -67,6 +71,8 @@ class BlogService {
       AppState.blogs = [...AppState.blogs, res.data]
     } catch (error) {
       // eslint-disable-next-line no-console
+      console.error('failed to create blog')
+      // eslint-disable-next-line no-console
       console.error(error)
     }
   }
@@ -78,6 +84,8 @@ class BlogService {
       console.log(res.data)
       AppState.blogs = [...AppState.blogs, res.data]
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('failed to edit blog')
       // eslint-disable-next-line no-console
       console.error(error)
     }
@@ -93,6 +101,8 @@ class BlogService {
       console.log(res.data)
       AppState.blogs = AppState.blogs.filter(blog => blog.id !== id)
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('failed to delete blog')
       // eslint-disable-next-line no-console
       console.error(error)
     }

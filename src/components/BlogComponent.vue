@@ -21,44 +21,48 @@ save
   <div class="BlogComponent col-12 col-lg-9 card bg-dark text-light">
     <div class="row">
       <div class="col-2">
-        <img class="img-fluid w-100" :src="blog.creator.picture" alt="picture">
+        <img
+          v-if="blog.creator.picture"
+          class="img-fluid w-100"
+          :src="blog.creator.picture"
+          alt="picture"
+        />
       </div>
       <div class="col-6">
-        <h6>{{ blog.title }}</h6>
-        <p class="overflow-hidden">{{ blog.body }}</p>
-        <small>{{ blog.creator.name }}</small>
+        <router-link :to="{ name: 'BlogPost', params: {id: blog._id} }">
+          <h6 v-if="blog.title">
+            {{ blog.title }}
+          </h6>
+        </router-link>
+        <p v-if="blog.body">
+          {{ blog.body }}
+        </p>
+        <small v-if="blog.creator.name">{{ blog.creator.name }}</small>
       </div>
-    </div>
-    <div class="row">
-      <CommentComponent v-for="c in comments" :key="c._id" :comment-prop="c" />
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue'
-import CommentComponent from '../components/CommentComponent'
-import { AppState } from '../AppState'
+// import { AppState } from '../AppState'
 export default {
   name: 'BlogComponent',
   props: {
     blogProp: {
-      type: Object,
-      default: () => {
-        alert('this blog post does not exist')
-      }
+      type: [Object, null],
+      default: () => { alert('blog not found') }
     }
   },
   setup(props) {
     return {
-      blog: computed(() => props.blogProp),
-      comments: computed(() => AppState.comments)
+      blog: computed(() => props.blogProp)
+      // comments: computed(() => AppState.comments)
     }
   },
-  components: { CommentComponent }
+  components: {}
 }
 </script>
 
 <style lang="scss" scoped>
-
 </style>

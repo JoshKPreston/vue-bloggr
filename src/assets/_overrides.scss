@@ -1,6 +1,13 @@
-.btn-primary {
-  color: $light;
-  background-color: $primary;
-  border-color: darken($color: $primary, $amount: 10);
-  border-width: medium;
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-touch-action: manipulation;
+  touch-action: manipulation;
 }
+
+// .btn-primary {
+//   color: $light;
+//   background-color: $primary;
+//   border-color: darken($color: $primary, $amount: 10);
+//   border-width: medium;
+// }

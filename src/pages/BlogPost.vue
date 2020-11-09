@@ -18,36 +18,39 @@
 // "id": "5f8e224b7fcfd30017ae8e1a"
 
 <template>
-  <div class="CommentComponent bg-info text-light">
+  <div class="BlogPost">
     <div class="row">
-      <CommentComponent
-        v-for="c in comments"
-        :key="c.id"
-        :comment-prop="c"
-      />
+      <div class="col-12 col-lg-10">
+        <div class="row text-center">
+          <div class="col-12">
+            <h1>{{ post.title }}</h1>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-12">
+            <h6>{{ post.body }}</h6>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { computed, onMounted } from 'vue'
-import { commentService } from '../services/CommentService'
+import { AppState } from '../AppState'
+import { blogService } from '../services/BlogService'
+import { useRoute } from 'vue-router'
 export default {
-  name: 'CommentComponent',
-  props: {
-    commentProp: {
-      type: Object,
-      default: () => {
-        alert('this comment does not exist')
-      }
-    }
-  },
-  setup(props) {
+  name: 'BlogPost',
+  setup() {
+    const route = useRoute()
     onMounted(() => {
-      commentService.getBlogComments()
+      blogService.getBlogById(route.params.id)
     })
     return {
-      comments: computed(() => props.commentProp)
+      post: computed(() => AppState.blogPost)
     }
   },
   components: {}
